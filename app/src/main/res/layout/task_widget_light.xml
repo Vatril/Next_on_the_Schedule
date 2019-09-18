@@ -1,0 +1,47 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFFFF"
+    android:gravity="center|center_horizontal"
+    android:padding="@dimen/widget_margin">
+
+    <ImageView
+        android:id="@+id/widgetColor"
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:background="#00FFFFFF"
+        android:contentDescription="@string/color" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/widgetTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/widgetDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/dismiss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        style="@style/AppTheme"
+        android:text="@string/dismiss" />
+
+
+</LinearLayout>

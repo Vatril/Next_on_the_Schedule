@@ -13,14 +13,24 @@
             android:name=".RemoveTask"
             android:exported="false"></service>
 
-        <receiver android:name=".TaskWidget">
+        <receiver android:name=".LightTaskWidget" android:label="Next Task Light">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/task_widget_info" />
+                android:resource="@xml/task_widget_light" />
+        </receiver>
+
+        <receiver android:name=".DarkTaskWidget" android:label="Next Task Dark">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/task_widget_dark" />
         </receiver>
 
         <activity android:name=".activity.AddItemActivity" />

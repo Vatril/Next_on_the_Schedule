@@ -12,10 +12,7 @@ import android.widget.RemoteViews
 import com.vatril.nextontheschedule.entity.TaskDatabase
 import kotlinx.coroutines.runBlocking
 
-/**
- * Implementation of App Widget functionality.
- */
-class TaskWidget : AppWidgetProvider() {
+abstract class TaskWidget : AppWidgetProvider() {
 
     override fun onUpdate(
         context: Context,
@@ -41,15 +38,19 @@ class TaskWidget : AppWidgetProvider() {
             val manager = AppWidgetManager.getInstance(context)
             this.onUpdate(
                 context, manager,
-                manager.getAppWidgetIds(ComponentName(context, TaskWidget::class.java))
+                manager.getAppWidgetIds(ComponentName(context, DarkTaskWidget::class.java))
+            )
+            this.onUpdate(
+                context, manager,
+                manager.getAppWidgetIds(ComponentName(context, LightTaskWidget::class.java))
             )
         }
     }
 
+
     companion object {
 
         fun updateAll(context: Context) {
-            val awm = AppWidgetManager.getInstance(context)
             val intent = Intent()
             intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
             intent.putExtra("com.vatril.TaskWidget", 5432)
@@ -66,8 +67,10 @@ class TaskWidget : AppWidgetProvider() {
                 if (!tasks.isNullOrEmpty()) {
 
                     val task = tasks.first()
-
-                    val views = RemoteViews(context.packageName, R.layout.task_widget)
+                    val views = RemoteViews(
+                        context.packageName,
+                        appWidgetManager.getAppWidgetInfo(appWidgetId).initialLayout
+                    )
                     views.setTextViewText(R.id.widgetTitle, task.name)
                     views.setTextViewText(R.id.widgetDescription, task.description)
                     views.setInt(R.id.widgetColor, "setBackgroundColor", task.color)
@@ -84,8 +87,8 @@ class TaskWidget : AppWidgetProvider() {
                     )
 
                     appWidgetManager.updateAppWidget(appWidgetId, views)
-                }else{
-                    val views = RemoteViews(context.packageName, R.layout.task_widget)
+                } else {
+                    val views = RemoteViews(context.packageName, R.layout.task_widget_light)
                     views.setTextViewText(R.id.widgetTitle, "No Tasks")
                     views.setViewVisibility(R.id.dismiss, View.INVISIBLE)
                     views.setInt(R.id.widgetColor, "setBackgroundColor", 0)
@@ -97,3 +100,5 @@ class TaskWidget : AppWidgetProvider() {
     }
 }
 
+class LightTaskWidget : TaskWidget()
+class DarkTaskWidget : TaskWidget()
