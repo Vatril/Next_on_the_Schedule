@@ -2,8 +2,6 @@ package com.vatril.nextontheschedule
 
 import android.app.IntentService
 import android.content.Intent
-import android.content.Context
-import android.util.Log
 import com.vatril.nextontheschedule.entity.Task
 import com.vatril.nextontheschedule.entity.TaskDatabase
 import kotlinx.coroutines.runBlocking

@@ -1,15 +1,16 @@
 package com.vatril.nextontheschedule.adapter
 
-import com.vatril.nextontheschedule.TaskWidget
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.vatril.nextontheschedule.R
+import com.vatril.nextontheschedule.TaskWidget
 import com.vatril.nextontheschedule.activity.AddItemActivity
 import com.vatril.nextontheschedule.entity.Task
 import com.vatril.nextontheschedule.entity.TaskDatabase
@@ -17,7 +18,9 @@ import kotlinx.android.synthetic.main.schedule_item.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-
+import org.commonmark.ext.gfm.strikethrough.StrikethroughExtension
+import org.commonmark.parser.Parser
+import org.commonmark.renderer.html.HtmlRenderer
 
 
 class TaskAdapter internal constructor(
@@ -36,8 +39,15 @@ class TaskAdapter internal constructor(
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        holder.itemView.title.text = tasks[position].name
-        holder.itemView.description.text = tasks[position].description
+        val extensions = listOf(
+            StrikethroughExtension.create()
+        )
+        val parser = Parser.builder().extensions(extensions).build()
+        val renderer = HtmlRenderer.builder().extensions(extensions).build()
+        holder.itemView.title.text = HtmlCompat.fromHtml(
+            renderer.render(parser.parse(tasks[position].name)), HtmlCompat.FROM_HTML_MODE_COMPACT)
+        holder.itemView.description.text = HtmlCompat.fromHtml(
+            renderer.render(parser.parse(tasks[position].description.orEmpty())), HtmlCompat.FROM_HTML_MODE_COMPACT)
         holder.itemView.colorDisplay.background = ColorDrawable(tasks[position].color)
         holder.itemView.editbtn.setOnClickListener {
             val intent = Intent(it.context, AddItemActivity::class.java)

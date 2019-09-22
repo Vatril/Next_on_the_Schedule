@@ -2,10 +2,10 @@ package com.vatril.nextontheschedule.activity
 
 
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 import com.vatril.nextontheschedule.R
 import com.vatril.nextontheschedule.TaskWidget

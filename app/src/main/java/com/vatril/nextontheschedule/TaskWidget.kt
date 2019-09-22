@@ -6,11 +6,14 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
+import androidx.core.text.HtmlCompat
 import com.vatril.nextontheschedule.entity.TaskDatabase
 import kotlinx.coroutines.runBlocking
+import org.commonmark.ext.gfm.strikethrough.StrikethroughExtension
+import org.commonmark.parser.Parser
+import org.commonmark.renderer.html.HtmlRenderer
 
 abstract class TaskWidget : AppWidgetProvider() {
 
@@ -71,8 +74,22 @@ abstract class TaskWidget : AppWidgetProvider() {
                         context.packageName,
                         appWidgetManager.getAppWidgetInfo(appWidgetId).initialLayout
                     )
-                    views.setTextViewText(R.id.widgetTitle, task.name)
-                    views.setTextViewText(R.id.widgetDescription, task.description)
+
+                    val extensions = listOf(
+                        StrikethroughExtension.create()
+                    )
+
+
+                    val parser = Parser.builder().extensions(extensions).build()
+                    val renderer = HtmlRenderer.builder().extensions(extensions).build()
+
+
+                    views.setTextViewText(R.id.widgetTitle, HtmlCompat.fromHtml(
+                        renderer.render(parser.parse(task.name)), HtmlCompat.FROM_HTML_MODE_COMPACT)
+                    )
+                    views.setTextViewText(R.id.widgetDescription, HtmlCompat.fromHtml(
+                        renderer.render(parser.parse(task.description.orEmpty())), HtmlCompat.FROM_HTML_MODE_COMPACT)
+                    )
                     views.setInt(R.id.widgetColor, "setBackgroundColor", task.color)
                     val intent = Intent(context, RemoveTask::class.java)
                     intent.putExtra("task", task.uid)

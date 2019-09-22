@@ -11,4 +11,5 @@
     <string name="dismiss">Dismiss</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="check">✔</string>
 </resources>
